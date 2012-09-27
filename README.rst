@@ -1,12 +1,12 @@
 About
 =====
 
-`surrogate` is a micro-lib helping people to create stubs
-for non-existing modules in `sys.modules` so that later
-those modules can be imported. `surrogate` does not touch
-modules that exist in `sys.modules` even if you ask it to.
+``surrogate`` is a micro-lib helping people to create stubs
+for non-existing modules in ``sys.modules`` so that later
+those modules can be imported. ``surrogate`` does not touch
+modules that exist in ``sys.modules`` even if you ask it to.
 
-At the moment `surrogate` offers only decorator interface
+At the moment ``surrogate`` offers only decorator interface
 but it is planned to add context-manager interface as well.
 
 Intention
@@ -19,16 +19,15 @@ development environment. Thus, in order to test those
 function, mocking of the aforementioned modules was
 necessary. Unfortunately, author did not manage to
 mock those modules with `patch` decorator from
-`mock` library. It was necessary to create module stubs
+``mock`` library. It was necessary to create module stubs
 first and then to mock them. This micro-lib does exactly
 what author needed (except of the mistakes, of course).
 
 Usage
 =====
 
-Please, use `surrogate` as a function decorator:
+Please, use ``surrogate`` as a function decorator::
 
-::
     from surrogate import surrogate
 
     @surrogate('sys.my.cool.module.stub1')
@@ -40,10 +39,10 @@ Please, use `surrogate` as a function decorator:
         import sys # this is a normal sys module
         do_something()
 
-Accourding to intention, you can use `surrogate`
-with `mock.patch` decorators:
 
-::
+Accourding to intention, you can use `surrogate`
+with `mock.patch` decorators::
+
     from surrogate import surrogate
     from mock import patch
 
