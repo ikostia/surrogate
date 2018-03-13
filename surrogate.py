@@ -27,6 +27,13 @@ class surrogate(object):
         self.path = path
         self.elements = self.path.split('.')
 
+    def __enter__(self):
+        self.prepared = self.prepare()
+
+    def __exit__(self, *args):
+        if self.prepared:
+            self.restore()
+
     def __call__(self, func):
         @wraps(func)
         def _wrapper(*args, **kwargs):
