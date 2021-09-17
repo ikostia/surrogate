@@ -1,5 +1,5 @@
 import unittest
-from surrogate import surrogate
+from surrogate import surrogate, importorinject
 
 def imports():
     import my
@@ -21,7 +21,7 @@ class TestSurrogateModuleStubs(unittest.TestCase):
 
         try:
             stubbed()
-        except Exception, e:
+        except Exception as e:
             raise Exception('Modules are not stubbed correctly: %r' % e)
 
         with self.assertRaises(ImportError) as e:
@@ -32,6 +32,16 @@ class TestSurrogateModuleStubs(unittest.TestCase):
             with surrogate('my.module.one'):
                 with surrogate('my.module.two'):
                     imports()
+
+
+    def test_import_for_whole_module(self):
+        some_module = importorinject("some_module")
+        datetime = importorinject("datetime")
+
+        assert some_module is not None
+        assert datetime is not None
+        result = datetime.date(2021, 4, 20)
+        assert result is not None
 
 
 if __name__ == '__main__':
