@@ -1,5 +1,6 @@
 import sys
 from functools import wraps
+import importlib
 
 __all__ = ('surrogate', )
 
@@ -157,3 +158,34 @@ class surrogate(object):
                 del self.base_module.__all__
             if hasattr(self.base_module, self.elements[0]):
                 delattr(self.base_module, self.elements[0])
+
+
+def importorinject(modulename):
+    """
+    Returns a module if modulename exists or stubs it and returns the stub.
+
+    This will import the modulename for the whole scope. There is no need to write @surrogate("modulename") before
+    each test case. The intention is to provide something similar to  pytest.importorskip function:
+    https://docs.pytest.org/en/6.2.x/reference.html#pytest-importorskip
+
+    Usage:
+        Instead of:
+
+            import some_module
+
+        that could potentially fail if there is no some_module, write this at test module level
+
+            some_module = importorinject("some_module")
+
+        Inside the test functions, some_module module/object will be available for usage, mocking, etc.
+
+    Args:
+        modulename: (str) The path/name of the module
+
+    Returns:
+
+    """
+    surrogate_obj = surrogate(modulename)
+    surrogate_obj.prepare()
+    module = importlib.import_module(modulename)
+    return module
